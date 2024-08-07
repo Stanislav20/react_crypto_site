@@ -1,6 +1,6 @@
-import { useState, useEffect, createContext } from 'react'
+import { useState, useEffect, createContext, useContext } from 'react'
 import { fakeFetchCryptoData, fakeFetchCryptoAssets} from '../fakeApi.js';
-import { percentDifference } from '../untils.js'
+import { percentDifference } from '../untils'
 
 const CryptoContext = createContext({ //базовые значения у контекста
 	assets: [],
@@ -42,3 +42,7 @@ export function CryptoContextProvider({children}) {
 }
 
 export default CryptoContext
+
+export function useCrypto() {
+	return useContext(CryptoContext)
+}
