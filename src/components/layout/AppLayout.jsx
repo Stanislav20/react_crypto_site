@@ -1,9 +1,9 @@
 import { Layout, Spin } from 'antd';
-import { useContext } from 'react'
-import AppHeader from './AppHeader'
-import AppSider from './AppSider'
-import AppContent from './AppContent'
-import CryptoContext from '../context/CryptoContext'
+import { useContext } from 'react';
+import AppHeader from './AppHeader';
+import AppSider from './AppSider';
+import AppContent from './AppContent';
+import CryptoContext from '../context/Crypto-context';
 
 export default function AppLayout () {
 	const { loading } = useContext(CryptoContext)

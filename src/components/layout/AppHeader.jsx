@@ -1,6 +1,6 @@
-import { Layout, Button, Select, Space, Modal} from 'antd';
-import { useState } from 'react'
-import { useCrypto } from '../context/cryptoContext'
+import { useState } from 'react';
+import { Layout, Button, Select, Space, Modal } from 'antd';
+import { useCrypto } from '../context/Crypto-context';
 
 const headerStyle = {
   wigth: '100%',
@@ -13,18 +13,15 @@ const headerStyle = {
   color: '#fff'
 };
 
-
-
 function AppHeader () {
-	const { modal, setModal } = useState(true)
+	const [ modal, setModal ] = useState(false)
 	const { cryptoData } = useCrypto()
 	
-	const handleSelect = (value) => {
-  alert(`selected ${value}`);
-  //setModal(true)
-};
+	function handleSelect(value) {
+  	console.log(`selected ${value}`);
+  	setModal(true)
+	};
   
-	
 	return (
 		<Layout.Header style={headerStyle}>
 			<Select
@@ -42,7 +39,6 @@ function AppHeader () {
 		      <Space>
 		        <img style={{
 		      		width: '20px',
-		      		height: '20px',
 		    		}}
 		    			src={option.data.icon} /> {option.data.label}
 		      </Space>
@@ -53,8 +49,8 @@ function AppHeader () {
 			<Modal 
 				title="Basic modal"
 				open={modal} 
-				//onOk={() => setModal(false)} 
-				//onCancel={() => setModal(false)}
+				onOk={() => setModal(false)} 
+				onCancel={() => setModal(false)}
 				//footer="null"
 				>
 				
