@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Layout, Button, Select, Space, Modal } from 'antd';
+import { Layout, Button, Select, Space, Modal, Drawer } from 'antd';
 import { useCrypto } from '../context/Crypto-context';
+import CoinInfoModal from '../CoinInfoModal'
 
 const headerStyle = {
   wigth: '100%',
@@ -14,12 +15,15 @@ const headerStyle = {
 };
 
 function AppHeader () {
-	const [ modal, setModal ] = useState(false)
+	const [modal, setModal] = useState(false)
+	const [coin, setCoin] = useState(null)
+	const [drawer, setDrawer] = useState(false)
 	const { cryptoData } = useCrypto()
 	
 	function handleSelect(value) {
   	console.log(`selected ${value}`);
   	setModal(true)
+  	setCoin(cryptoData.find(c => c.id === value))
 	};
   
 	return (
@@ -44,20 +48,21 @@ function AppHeader () {
 		      </Space>
 		    )}
 	  	/>
-			<Button type="primary">Primary Button</Button>
+			<Button type="primary" onClick={() => setDrawer(true)}>Primary Button</Button>
 			
 			<Modal 
-				title="Basic modal"
 				open={modal} 
-				onOk={() => setModal(false)} 
 				onCancel={() => setModal(false)}
-				//footer="null"
-				>
-				
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+				footer={null}
+			>
+				<CoinInfoModal coin={coin}/>
       </Modal>
+      
+      <Drawer title="Basic Drawer" onClose={() => setDrawer(false)} open={drawer}>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Drawer>
 		</Layout.Header>
 	)
 }
