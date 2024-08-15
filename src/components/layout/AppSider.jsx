@@ -1,7 +1,7 @@
 import { Layout, Card, Statistic, List, Typography, Tag} from 'antd';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import { useContext } from 'react'
-import { capitalize } from '../untils'
+import { capitalize } from '../utils'
 import CryptoContext from '../context/Crypto-context'
 
 const siderStyle = {
@@ -15,7 +15,7 @@ function AppSider () {
 		<Layout.Sider width="35%" style={siderStyle}>
 			{
 				assets.map(asset => (
-					<Card>
+					<Card style={{marginBottom: 20}}>
 					
       			<Statistic
         		  title={capitalize(asset.id)}
