@@ -15,6 +15,7 @@ const validateMessages = {
 export default function AddAssetForm () {
 	const { cryptoData } = useCrypto();
 	const [coin, setCoin] = useState(null)
+	const [form] = Form.useForm();
 	
 	if (!coin) {
 		return (
@@ -40,13 +41,28 @@ export default function AddAssetForm () {
 		console.log(`values : ${values}`)
 	}	
 		
+	function handleAmountChange(value) {
+		const price = form.getFieldValue("price")
+		form.setFieldsValue({
+			total: +((value*price).toFixed(2))
+		})
+	}
+		
+	function handlePriceChange(value) {
+		const amount = form.getFieldValue("amount")
+		form.setFieldsValue({
+			total: +((value*amount).toFixed(2))
+		})
+	}
+		
 	return (
 			<Form
+				form={form}
 		    name="basic"
 		    labelCol={{ span: 4 }}
 		    wrapperCol={{ span: 30 }}
 		    style={{ maxWidth: 600 }}
-		    initialValues={{ }}
+		    initialValues={{ price: +coin.price.toFixed(2) }}
 		    onFinish={onFinish}
 		    validateMessages={validateMessages}
   		>
@@ -68,7 +84,7 @@ export default function AddAssetForm () {
 		        },
 		      ]}
 		    >
-		      <InputNumber style={{ width: '100%' }} />
+		      <InputNumber placeholder="Enter to coin amount..." onChange={handleAmountChange} style={{ width: '100%' }} />
 		    </Form.Item>
 
 				<Form.Item label="Date & time" name="date & time">
@@ -76,7 +92,7 @@ export default function AddAssetForm () {
 		    </Form.Item>
 
 		    <Form.Item label="Price" name="price">
-		      <InputNumber disabled style={{ width: '100%' }} />
+		      <InputNumber onChange={handlePriceChange} style={{ width: '100%' }} />
 		    </Form.Item>
 		    
 		    <Form.Item label="Total" name="total">
