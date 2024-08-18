@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Select, Space, Typography, Divider, Flex, Form, Button, InputNumber, DatePicker } from 'antd';
+import { Select, Space, Typography, Divider, Flex, Form, Button, InputNumber, DatePicker, Result } from 'antd';
 import { useCrypto } from './context/Crypto-context';
+import CoinInfo from './CoinInfo'
 
 const validateMessages = {
   required: '${label} is required!',
@@ -12,10 +13,26 @@ const validateMessages = {
 	},
 }
 
-export default function AddAssetForm () {
+export default function AddAssetForm ({ onClose }) {
 	const { cryptoData } = useCrypto();
 	const [coin, setCoin] = useState(null)
+	const [submitted, setSubmitted] = useState(false)
 	const [form] = Form.useForm();
+	
+	if(submitted) {
+		return(
+			<Result
+    status="success"
+    title="Asset Added!"
+    subTitle={`Add ${24} of ${coin.name} price: ${40}`}
+    extra={[
+      <Button type="primary" key="close" onClick={onClose}>
+        Close
+      </Button>,
+    ]}
+  />
+		)
+	}
 	
 	if (!coin) {
 		return (
@@ -39,6 +56,7 @@ export default function AddAssetForm () {
 		
 	function onFinish (values) {
 		console.log(`values : ${values}`)
+		setSubmitted(true)
 	}	
 		
 	function handleAmountChange(value) {
@@ -66,10 +84,7 @@ export default function AddAssetForm () {
 		    onFinish={onFinish}
 		    validateMessages={validateMessages}
   		>
-				<Flex align='center'>
-					<img style={{ width: 40 , marginRight: 10 }} src={coin.icon} alt={coin.name} />
-					<Typography.Title level={2} style={{ margin: 0 }} >{coin.name}</Typography.Title>
-				</Flex>
+				<CoinInfo coin={coin} />
 				<Divider />
 
 		    <Form.Item

@@ -60,7 +60,7 @@ function AppHeader () {
       </Modal>
       
       <Drawer title="Add Asset" onClose={() => setDrawer(false)} open={drawer}>
-        <AddAssetForm />
+        <AddAssetForm onClose={() => setDrawer(false)}/>
       </Drawer>
 		</Layout.Header>
 	)
