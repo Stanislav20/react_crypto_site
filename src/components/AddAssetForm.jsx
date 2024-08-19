@@ -104,7 +104,6 @@ export default function AddAssetForm ({ onClose }) {
 		          required: true,
 		          type: 'number',
 		          min: 0,
-		          //message: 'Please input your username!',
 		        },
 		      ]}
 		    >

@@ -8,8 +8,17 @@ const CryptoContext = createContext({ //базовые значения у ко�
 	loading: false,
 })
 
-function mapAssets() {
-	
+function mapAssets(assets, result) {
+	return assets.map(asset => {
+		const coin = result.find((c)=> c.id === asset.id)
+		return {
+			grow: asset.price < coin.price,//рост монетки, да или нет
+			growPercent: percentDifference(asset.price, coin.price).toFixed(2), //разница в процентах
+			totalAmount: (asset.amount * coin.price).toFixed(2), //количество денег в монетках
+			totalProfit: (asset.amount * coin.price - asset.amount * asset.price).toFixed(2), //сколько заработали на изменении курса стоимости монетки
+			...asset,
+		}
+	})
 }
 
 export function CryptoContextProvider({children}) {
@@ -23,18 +32,7 @@ export function CryptoContextProvider({children}) {
 			const {result} = await fakeFetchCryptoData()
 			const assets = await fakeFetchCryptoAssets()
 			
-			setAssets(
-				assets.map((asset)=> {
-					const coin = result.find((c)=> c.id === asset.id)
-					return {
-						grow: asset.price < coin.price,//рост монетки, да или нет
-						growPercent: percentDifference(asset.price, coin.price).toFixed(2), //разница в процентах
-						totalAmount: (asset.amount * coin.price).toFixed(2), //количество денег в монетках
-						totalProfit: (asset.amount * coin.price - asset.amount * asset.price).toFixed(2), //сколько заработали на изменении курса стоимости монетки
-						...asset,
-					}
-				})
-			)
+			setAssets(mapAssets(assets, result))
 			setCryptoData(result)
 			setLoading(false)
 		}
@@ -42,7 +40,7 @@ export function CryptoContextProvider({children}) {
 	},[])
 	
 	function addAsset(newAsset) {
-		setAssets(prev => [...prev, newAsset])
+		setAssets(prev => mapAssets([...prev, newAsset], cryptoData))
 	}
 	
 	return <CryptoContext.Provider value={{assets, cryptoData, loading, addAsset}}>{children}</CryptoContext.Provider>
