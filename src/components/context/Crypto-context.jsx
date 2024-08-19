@@ -8,6 +8,10 @@ const CryptoContext = createContext({ //базовые значения у ко�
 	loading: false,
 })
 
+function mapAssets() {
+	
+}
+
 export function CryptoContextProvider({children}) {
 	const [loading, setLoading] = useState(false)
 	const [cryptoData, setCryptoData] = useState([])
@@ -37,8 +41,11 @@ export function CryptoContextProvider({children}) {
 		preload()
 	},[])
 	
+	function addAsset(newAsset) {
+		setAssets(prev => [...prev, newAsset])
+	}
 	
-	return <CryptoContext.Provider value={{assets, cryptoData, loading}}>{children}</CryptoContext.Provider>
+	return <CryptoContext.Provider value={{assets, cryptoData, loading, addAsset}}>{children}</CryptoContext.Provider>
 }
 
 export default CryptoContext;
