@@ -22,7 +22,6 @@ function AppHeader () {
 	const { cryptoData } = useCrypto()
 	
 	function handleSelect(value) {
-  	console.log(`selected ${value}`);
   	setModal(true)
   	setCoin(cryptoData.find(c => c.id === value))
 	};

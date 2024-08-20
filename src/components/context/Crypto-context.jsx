@@ -8,9 +8,9 @@ const CryptoContext = createContext({ //базовые значения у ко�
 	loading: false,
 })
 
-function mapAssets(assets, result) {
+function mapAssets(assets, cryptoData) {
 	return assets.map(asset => {
-		const coin = result.find((c)=> c.id === asset.id)
+		const coin = cryptoData.find((c)=> c.id === asset.id)
 		return {
 			grow: asset.price < coin.price,//рост монетки, да или нет
 			growPercent: percentDifference(asset.price, coin.price).toFixed(2), //разница в процентах
@@ -21,30 +21,30 @@ function mapAssets(assets, result) {
 	})
 }
 
-export function CryptoContextProvider({children}) {
-	const [loading, setLoading] = useState(false)
+export function CryptoContextProvider({children}) {  //в этом компоненте лежат все данные и переменные
+	const [loading, setLoading] = useState(false)			 //которые будут храниться в контексте.
 	const [cryptoData, setCryptoData] = useState([])
 	const [assets, setAssets] = useState([])
 	
-	useEffect(()=> {
-		async function preload(){
+useEffect(()=> {
+		async function preload(){  //здесь создаем функцию которая имитирует запрос на сервер, на получение информации о криптовалютах.
 			setLoading(true)
-			const {result} = await fakeFetchCryptoData()
-			const assets = await fakeFetchCryptoAssets()
+			const {result} = await fakeFetchCryptoData()  //получение информации о всех криптовалютах
+			const assets = await fakeFetchCryptoAssets()  //получение информации о криптовалюте которая есть в моем портфеле.
 			
 			setAssets(mapAssets(assets, result))
-			setCryptoData(result)
-			setLoading(false)
+			setCryptoData(result)  
+			setLoading(false)  //исчезновение окна загрузки после получения данных.
 		}
-		preload()
-	},[])
+		preload()  //сразу после объявления, вызывается функция при первичном рендеринге страницы.
+},[])
 	
-	function addAsset(newAsset) {
-		setAssets(prev => mapAssets([...prev, newAsset], cryptoData))
-	}
-	
-	return <CryptoContext.Provider value={{assets, cryptoData, loading, addAsset}}>{children}</CryptoContext.Provider>
+function addAsset(newAsset) {
+	setAssets(prev => mapAssets([...prev, newAsset], cryptoData))
 }
+	
+	return <CryptoContext.Provider value={{assets, cryptoData, loading, addAsset}}>{children}</CryptoContext.Provider> //в value записаны переменные которые 
+}																																																										 //передаются к дочерним компонентам через контекст.
 
 export default CryptoContext;
 
