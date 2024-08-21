@@ -1,5 +1,7 @@
 import { Layout, Typography } from 'antd';
 import { useCrypto } from '../context/Crypto-context'
+import PortfolioChart from './PortfolioChart'
+import AssetsTable from './AssetsTable'
 
 const contentStyle = {
   textAlign: 'center',
@@ -23,6 +25,8 @@ function AppContent () {
 	return (
 		<Layout.Content style={contentStyle}>
 			<Typography.Title level={3} style={{color: '#fff', textAlign: 'left'}}>Portfolio: {totalCrypto}$</Typography.Title>
+			<PortfolioChart />
+			<AssetsTable />
 		</Layout.Content>
 	)
 }
