@@ -16,6 +16,7 @@ function mapAssets(assets, cryptoData) {
 			growPercent: percentDifference(asset.price, coin.price).toFixed(2), //разница в процентах
 			totalAmount: (asset.amount * coin.price).toFixed(2), //количество денег в монетках
 			totalProfit: (asset.amount * coin.price - asset.amount * asset.price).toFixed(2), //сколько заработали на изменении курса стоимости монетки
+			name: coin.name,
 			...asset,
 		}
 	})
